@@ -2,7 +2,7 @@
 import Arreglo from "./Clases/Arreglo.js";
 import CuadroMagico from "./Clases/CuadroMagico.js";
 import Matriz from "./Clases/Matriz.js";
-import Matriz_2 from "./Clases/Matriz_2.js";
+import MatrizCuadrada from "./Clases/Matriz_2.js";
 
 // Obtención de elementos del DOM
 const seleccionPractica = document.getElementById("work-selector");
@@ -20,6 +20,7 @@ const formPractica9 = document.getElementById("practica-9");
 
 const formPractica10 = document.getElementById("practica-10");
 const formMatriz2 = document.getElementById("p10-form");
+const matrizSize = document.getElementById("matrix-size")
 
 // Inicializar ocultando el contenedor y los formularios
 contenedor.style.display = "none";
@@ -196,17 +197,52 @@ formMatrix.addEventListener("submit", (event) => {
   )}`;
 });
 
-// ---- Práctica 10: Generar matriz con diagonal de 1's y 0's en el resto ----
-formMatriz2.addEventListener("submit", (event) => {
-  event.preventDefault();
+// Obtener el tamaño de la matriz cuando cambia el input
+matrizSize.addEventListener("input", function () {
+  const size = parseInt(this.value);
 
-  const dimensionInput = document.getElementById("dimension").value;
-  const dimension = parseInt(dimensionInput);
-
-  if (dimension > 0) {
-    const nuevaMatriz = new Matriz_2(dimension);
-    nuevaMatriz.mostrarMatriz();
-  } else {
-    alert("Por favor, ingresa una dimensión válida.");
-  }
+  crearFormularioMatriz(size);
 });
+
+// Función para generar los inputs vacíos de la matriz
+function crearFormularioMatriz(size) {
+  const container = document.getElementById("matrix-container");
+  container.innerHTML = ""; // Limpiar el contenido anterior
+
+  const matriz = new MatrizCuadrada(size); // Crear una nueva instancia de la clase MatrizCuadrada
+
+  // Crear inputs vacíos
+  let htmlFormulario = '<table>';
+  for (let i = 0; i < size; i++) {
+      htmlFormulario += '<tr>';
+      for (let j = 0; j < size; j++) {
+          htmlFormulario += `<td><input type="number" id="celda-${i}-${j}" value=""></td>`;
+      }
+      htmlFormulario += '</tr>';
+  }
+  htmlFormulario += '</table>';
+  container.innerHTML = htmlFormulario;
+
+  // Mostrar el botón de transformación
+  const transformButton = document.getElementById("transformbutton");
+  transformButton.style.display = 'block';
+}
+
+// Función para transformar la matriz en identidad al hacer clic en el botón
+formMatriz2.addEventListener("submit", (event) => {
+  event.preventDefault(); // Evitar el recargo de la página al enviar el formulario
+
+  const size = parseInt(document.getElementById("matrix-size").value); // Obtener el tamaño de la matriz
+  const matriz = new MatrizCuadrada(size); // Crear una nueva instancia de MatrizCuadrada
+
+  // Obtener los valores ingresados por el usuario
+  matriz.obtenerMatrizDelFormulario();
+
+  // Aplicar el método de Gauss-Jordan y mostrar solo la matriz identidad
+  const matrizIdentidad = matriz.renderizarMatrizCompleta();
+
+  // Mostrar la matriz transformada (identidad)
+  const resultContainer = document.getElementById("result-container");
+  resultContainer.innerHTML = matrizIdentidad;
+});
+

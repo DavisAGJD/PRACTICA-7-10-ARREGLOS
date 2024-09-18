@@ -89,13 +89,12 @@
 
             <div class="practica-10" id="practica-10">
                 <form id="p10-form">
-                    <h1>Matriz Cuadrada con Diagonal de 1's</h1>
-    
-                    <label for="dimension">Introduce la dimensión de la matriz (n x n): </label>
-                    <input type="number" id="dimension" min="1" max="10">
-                    <button type="submit">Generar Matriz</button>
-                
-                    <div id="matriz"></div>
+                    <h1>Transformar Matriz Cuadrada</h1>
+                    <label for="matrix-size">Tamaño de la matriz:</label>
+                    <input type="number" id="matrix-size" min="2">
+                    <div id="matrix-container"></div>
+                    <button id="transformbutton" style="display:none;" type="submit">Transformar a Identidad</button>
+                    <div id="result-container"></div>
                 </form>
             </div>
         </div>
